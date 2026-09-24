@@ -7,7 +7,7 @@
   <title>Heroic WFH Calendar</title>
   <style>
     :root{--navy:#172033;--gold:#f4b83f;--soft:#fff4d6;--bg:#f4f6f9;--line:#e4e8ef;--muted:#697386;--green:#16735a;--red:#bd3b4b}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 95% 0,#fff0c3 0,transparent 25%),var(--bg);color:var(--navy);font:14px/1.4 Inter,system-ui,"Segoe UI",sans-serif}button,select{font:inherit}.app{max-width:1320px;margin:auto;padding:30px 24px 50px}.top,.toolbar{display:flex;justify-content:space-between;align-items:center;gap:20px}.top{margin-bottom:20px}.brand{display:flex;align-items:center;gap:13px}.logo{width:46px;height:46px;border-radius:14px;background:var(--navy);color:var(--gold);display:grid;place-items:center;font-size:24px;font-weight:900}h1{margin:0 0 3px;font-size:26px}.sub{margin:0;color:var(--muted)}.month-nav{display:flex;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:5px}.nav{border:0;background:transparent;width:38px;height:38px;border-radius:10px;cursor:pointer;font-size:20px}.month{min-width:165px;text-align:center;font-size:16px;font-weight:800;text-transform:capitalize}.layout{display:grid;grid-template-columns:minmax(0,1fr) 275px;gap:18px}.panel,.card{background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:0 18px 48px #17203317}.panel{overflow:hidden}.toolbar{padding:16px 18px;border-bottom:1px solid var(--line)}.person{display:flex;align-items:center;gap:10px}.person label{font-weight:750}.person select{min-width:230px;border:1px solid var(--line);border-radius:11px;padding:9px;background:#fff;font-weight:700}.save{border:0;background:var(--navy);color:#fff;padding:10px 15px;border-radius:11px;font-weight:800;cursor:pointer}.save:disabled{opacity:.55}.save.ok{background:var(--green)}.weekdays,.calendar{display:grid;grid-template-columns:repeat(7,1fr)}.weekdays{background:#fafbfc;border-bottom:1px solid var(--line)}.weekday{text-align:center;padding:11px 5px;color:#70798a;font-size:11px;text-transform:uppercase;font-weight:850}.day{position:relative;min-height:125px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px;background:#fff}.day:nth-child(7n){border-right:0}.day.out{background:#fafbfc;color:#b3b9c3}.day.weekend{background:#f8f9fb;color:#9ca3af}.day.workday:not(.out){cursor:pointer}.day.workday:not(.out):hover{background:#fffaf0}.day.selected{background:linear-gradient(145deg,#fff8e8,#fff2c9)}.day.wish{box-shadow:inset 0 0 0 2px var(--gold)}.date{width:29px;height:29px;display:grid;place-items:center;border-radius:9px;font-weight:800}.today .date{background:var(--navy);color:#fff}.star{position:absolute;top:9px;right:9px;border:0;background:transparent;width:29px;height:29px;border-radius:9px;color:#c6cbd3;cursor:pointer;font-size:17px}.wish .star{background:var(--gold);color:var(--navy)}.tags{position:absolute;left:9px;right:9px;bottom:9px;display:flex;gap:5px;flex-wrap:wrap}.tag{font-size:10px;padding:4px 6px;border-radius:7px;background:#eef1f5;color:#657083;font-weight:750}.tag.mine{background:var(--gold);color:var(--navy)}.tag.wishes{background:#e7f5f0;color:var(--green)}.side{display:flex;flex-direction:column;gap:18px}.card{padding:18px}.card h2{font-size:15px;margin:0 0 14px}.legend,.progress{display:grid;gap:11px}.legend{color:var(--muted);font-size:13px}.legend-row{display:flex;gap:9px;align-items:center}.swatch{width:18px;height:18px;border-radius:6px;border:1px solid var(--line)}.swatch.available{background:var(--soft);border-color:var(--gold)}.swatch.wish{background:var(--gold)}.hint{margin:14px 0 0;padding-top:14px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}.p{display:flex;align-items:center;gap:8px}.avatar{width:30px;height:30px;border-radius:9px;background:var(--navy);color:var(--gold);display:grid;place-items:center;font-size:11px;font-weight:850}.pi{min-width:0;flex:1}.pn{font-size:12px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pc{font-size:10px;color:var(--muted)}.pill{font-size:10px;font-weight:850;padding:4px 6px;border-radius:999px;background:#eef1f5;color:#697386}.pill.done{background:#e7f5f0;color:var(--green)}.overlay{position:fixed;inset:0;background:#f4f6f9d9;display:grid;place-items:center;z-index:9;font-weight:800}.overlay.hide{display:none}.toast{position:fixed;right:22px;bottom:22px;background:var(--navy);color:#fff;padding:12px 16px;border-radius:12px;opacity:0;transform:translateY(12px);transition:.2s;z-index:10}.toast.show{opacity:1;transform:none}@media(max-width:980px){.layout{grid-template-columns:1fr}.side{display:grid;grid-template-columns:1fr 1fr}}@media(max-width:680px){.app{padding:18px 10px}.top,.toolbar{align-items:stretch;flex-direction:column}.month-nav{justify-content:space-between}.person{align-items:stretch;flex-direction:column}.person select{width:100%;min-width:0}.day{min-height:84px;padding:5px}.weekday{font-size:9px}.tags{left:4px;bottom:4px}.tag{font-size:8px;padding:3px}.side{grid-template-columns:1fr}}
-    .weekly-summary{display:grid;gap:14px}.week-chart{padding-top:13px;border-top:1px solid var(--line)}.week-chart:first-child{padding-top:0;border-top:0}.week-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:9px}.week-title{font-size:12px;font-weight:850}.week-best{font-size:10px;color:var(--green);font-weight:800;text-align:right}.bar-row{display:grid;grid-template-columns:34px 1fr 24px;align-items:center;gap:7px;margin:6px 0}.bar-label{font-size:10px;color:var(--muted);font-weight:750}.bar-track{height:9px;background:#eef1f5;border-radius:999px;overflow:hidden}.bar-fill{height:100%;min-width:0;background:#c9d0db;border-radius:999px}.bar-row.best .bar-fill{background:var(--gold)}.bar-row.has-wish .bar-label{color:var(--navy);font-weight:900}.bar-value{font-size:10px;text-align:right;font-weight:850}.wish-note{margin-top:8px;padding:7px 9px;border-radius:9px;background:#fff6db;color:#6f5110;font-size:10px;font-weight:750}.empty-chart{color:var(--muted);font-size:12px}
+    .weekly-summary{display:grid;gap:14px}.week-chart{padding-top:13px;border-top:1px solid var(--line)}.week-chart:first-child{padding-top:0;border-top:0}.week-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:9px}.week-title{font-size:12px;font-weight:850}.week-best{font-size:10px;color:var(--green);font-weight:800;text-align:right}.bar-row{display:grid;grid-template-columns:34px 1fr 24px;align-items:center;gap:7px;margin:6px 0}.bar-label{font-size:10px;color:var(--muted);font-weight:750}.bar-track{height:9px;background:#eef1f5;border-radius:999px;overflow:hidden}.bar-fill{height:100%;min-width:0;background:#c9d0db;border-radius:999px}.bar-row.best .bar-fill{background:var(--gold)}.bar-row.has-wish .bar-label{color:var(--navy);font-weight:900}.bar-value{font-size:10px;text-align:right;font-weight:850}.wish-note{margin-top:8px;padding:7px 9px;border-radius:9px;background:#fff6db;color:#6f5110;font-size:10px;font-weight:750}.empty-chart{color:var(--muted);font-size:12px}.toolbar-actions{display:flex;gap:8px}.all-day{border:1px solid #e3ae3e;background:var(--soft);color:var(--navy);padding:10px 15px;border-radius:11px;font-weight:800;cursor:pointer}.all-day:disabled{opacity:.45;cursor:not-allowed}
   </style>
 </head>
 <body>
@@ -15,8 +15,8 @@
   <main class="app">
     <header class="top"><div class="brand"><div class="logo">H</div><div><h1>Heroic WFH Calendar</h1><p class="sub">Đăng ký trước lịch làm việc tại nhà theo tháng</p></div></div><div class="month-nav"><button class="nav" id="prev">‹</button><div class="month" id="monthName"></div><button class="nav" id="next">›</button></div></header>
     <div class="layout">
-      <section class="panel"><div class="toolbar"><div class="person"><label for="member">Đang đăng ký cho</label><select id="member"></select></div><button class="save" id="save">Lưu đăng ký</button></div><div class="weekdays"><div class="weekday">Thứ 2</div><div class="weekday">Thứ 3</div><div class="weekday">Thứ 4</div><div class="weekday">Thứ 5</div><div class="weekday">Thứ 6</div><div class="weekday">Thứ 7</div><div class="weekday">Chủ nhật</div></div><div class="calendar" id="calendar"></div></section>
-      <aside class="side"><section class="card"><h2>Cách đăng ký</h2><div class="legend"><div class="legend-row"><i class="swatch available"></i><span>Bấm ngày để chọn <b>có thể WFH</b></span></div><div class="legend-row"><i class="swatch wish">★</i><span>Bấm ngôi sao để chọn <b>Wish date</b></span></div></div><p class="hint">Mỗi tuần tối đa 5 ngày có thể WFH và 1 Wish date. Sau khi chọn, hãy bấm “Lưu đăng ký”.</p></section><section class="card"><h2>Tổng hợp theo tuần</h2><div class="weekly-summary" id="weeklySummary"></div></section><section class="card"><h2>Tiến độ tháng</h2><div class="progress" id="progress"></div></section></aside>
+      <section class="panel"><div class="toolbar"><div class="person"><label for="member">Đang đăng ký cho</label><select id="member"></select></div><div class="toolbar-actions"><button class="all-day" id="allDay" disabled>✓ All Day</button><button class="save" id="save" disabled>Lưu đăng ký</button></div></div><div class="weekdays"><div class="weekday">Thứ 2</div><div class="weekday">Thứ 3</div><div class="weekday">Thứ 4</div><div class="weekday">Thứ 5</div><div class="weekday">Thứ 6</div><div class="weekday">Thứ 7</div><div class="weekday">Chủ nhật</div></div><div class="calendar" id="calendar"></div></section>
+      <aside class="side"><section class="card"><h2>Cách đăng ký</h2><div class="legend"><div class="legend-row"><i class="swatch available"></i><span>Bấm ngày để chọn <b>có thể WFH</b></span></div><div class="legend-row"><i class="swatch wish">★</i><span>Bấm ngôi sao để chọn <b>Wish date</b></span></div></div><p class="hint">Hãy chọn tên nhân sự trước. Mỗi tuần tối đa 5 ngày có thể WFH và 1 Wish date. Nếu có thể WFH tất cả ngày làm việc, bấm “All Day”, sau đó bấm “Lưu đăng ký”.</p></section><section class="card"><h2>Tổng hợp theo tuần</h2><div class="weekly-summary" id="weeklySummary"></div></section><section class="card"><h2>Tiến độ tháng</h2><div class="progress" id="progress"></div></section></aside>
     </div>
   </main>
   <div class="toast" id="toast"></div>
@@ -29,7 +29,8 @@
       'Nguyễn Hoàng Kim',
       'Nguyễn Hoàng Thiên Chí',
       'Đặng Đình Khôi',
-      'Huỳnh Lê Quốc Bảo'
+      'Huỳnh Lê Quốc Bảo',
+      'Phạm Lâm Quang Tuyến'
     ];
     let members = [...DEFAULT_MEMBERS], records = [], cursor = new Date(), active = '';
     cursor = new Date(cursor.getFullYear(), cursor.getMonth(), 1);
@@ -61,15 +62,15 @@
       $('loading').classList.remove('hide');
       try {
         const data = await jsonp({action:'calendar', month:monthKey()});
-        members = Array.isArray(data.members) && data.members.length ? data.members : [...DEFAULT_MEMBERS];
+        members = [...new Set([...DEFAULT_MEMBERS, ...(Array.isArray(data.members) ? data.members : [])])];
         records = Array.isArray(data.records) ? data.records : [];
-        active = active && members.includes(active) ? active : members[0];
-        $('member').innerHTML = members.map(n => `<option ${n===active?'selected':''}>${escapeHtml(n)}</option>`).join('');
+        active = active && members.includes(active) ? active : '';
+        renderMemberOptions();
         render();
       } catch (error) {
         members = [...DEFAULT_MEMBERS];
-        active = active && members.includes(active) ? active : members[0];
-        $('member').innerHTML = members.map(n => `<option ${n===active?'selected':''}>${escapeHtml(n)}</option>`).join('');
+        active = active && members.includes(active) ? active : '';
+        renderMemberOptions();
         render();
         fail(new Error('Không đọc được Google Sheet: ' + (error.message || String(error))));
       }
@@ -80,8 +81,11 @@
     function mine(d){return records.find(r=>r.member===active&&r.date===iso(d))}
     function ensure(d){let r=mine(d);if(!r){r={member:active,date:iso(d),available:false,wish:false};records.push(r)}return r}
     function count(d,k){return records.filter(r=>r.date===iso(d)&&r[k]).length}
-    function toggle(d){if([0,6].includes(d.getDay())||d.getMonth()!==cursor.getMonth())return;const r=ensure(d),same=records.filter(x=>x.member===active&&x.available&&week(parse(x.date))===week(d));if(!r.available&&same.length>=5)return showToast('Tuần này đã chọn đủ 5 ngày');r.available=!r.available;if(!r.available)r.wish=false;render()}
-    function star(d,e){e.stopPropagation();if(d.getMonth()!==cursor.getMonth())return;const r=ensure(d),wk=week(d);records.filter(x=>x.member===active&&week(parse(x.date))===wk).forEach(x=>x.wish=false);r.available=true;r.wish=true;render()}
+    function requireMember(){if(active)return true;showToast('Vui lòng chọn tên nhân sự trước');$('member').focus();return false}
+    function renderMemberOptions(){$('member').innerHTML=`<option value="" ${active?'':'selected'} disabled>-- Chọn nhân sự --</option>`+members.map(n=>`<option value="${escapeHtml(n)}" ${n===active?'selected':''}>${escapeHtml(n)}</option>`).join('');$('allDay').disabled=!active;$('save').disabled=!active}
+    function toggle(d){if(!requireMember()||[0,6].includes(d.getDay())||d.getMonth()!==cursor.getMonth())return;const r=ensure(d),same=records.filter(x=>x.member===active&&x.available&&week(parse(x.date))===week(d));if(!r.available&&same.length>=5)return showToast('Tuần này đã chọn đủ 5 ngày');r.available=!r.available;if(!r.available)r.wish=false;render()}
+    function star(d,e){e.stopPropagation();if(!requireMember()||d.getMonth()!==cursor.getMonth())return;const r=ensure(d),wk=week(d);records.filter(x=>x.member===active&&week(parse(x.date))===wk).forEach(x=>x.wish=false);r.available=true;r.wish=true;render()}
+    function selectAllDays(){if(!requireMember())return;dates().filter(d=>d.getMonth()===cursor.getMonth()&&![0,6].includes(d.getDay())).forEach(d=>{ensure(d).available=true});render();showToast('Đã chọn tất cả ngày làm việc — hãy bấm Lưu đăng ký')}
 
     function render(){ $('monthName').textContent=cursor.toLocaleDateString('vi-VN',{month:'long',year:'numeric'});$('calendar').innerHTML='';dates().forEach(d=>{const r=mine(d),out=d.getMonth()!==cursor.getMonth(),end=[0,6].includes(d.getDay()),el=document.createElement('div'),a=count(d,'available'),w=count(d,'wish');el.className=`day ${out?'out':''} ${end?'weekend':'workday'} ${r?.available?'selected':''} ${r?.wish?'wish':''} ${iso(d)===iso(new Date())?'today':''}`;el.innerHTML=`<span class="date">${d.getDate()}</span>${!end&&!out?'<button class="star" aria-label="Chọn Wish date">★</button>':''}<div class="tags">${a?`<span class="tag ${r?.available?'mine':''}">${a} có thể</span>`:''}${w?`<span class="tag wishes">${w} wish</span>`:''}</div>`;el.onclick=()=>toggle(d);el.querySelector('.star')?.addEventListener('click',e=>star(d,e));$('calendar').appendChild(el)});$('progress').innerHTML=members.map(n=>{const own=records.filter(r=>r.member===n),a=own.filter(r=>r.available).length,w=own.filter(r=>r.wish).length;return`<div class="p"><span class="avatar">${escapeHtml(initials(n))}</span><div class="pi"><div class="pn">${escapeHtml(n)}</div><div class="pc">${a} ngày có thể · ${w} wish</div></div><span class="pill ${w>=4?'done':''}">${w>=4?'Đã chọn':'Đang chọn'}</span></div>`}).join('');renderWeeklySummary() }
 
@@ -111,6 +115,7 @@
     function formatShortDate(date){return `${pad(date.getDate())}/${pad(date.getMonth()+1)}`}
 
     async function saveMonth(){
+      if(!requireMember())return;
       const entries=records.filter(r=>r.member===active&&r.date.startsWith(monthKey()+'-')).map(r=>({date:r.date,available:r.available,wish:r.wish}));
       $('save').disabled=true;$('save').textContent='Đang lưu…';
       try {
@@ -137,7 +142,8 @@
     function fail(error){$('loading').classList.add('hide');showToast(error.message||String(error))}
     function showToast(message){const t=$('toast');t.textContent=message;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000)}
     $('save').onclick=saveMonth;
-    $('member').onchange=e=>{active=e.target.value;render()};
+    $('allDay').onclick=selectAllDays;
+    $('member').onchange=e=>{active=e.target.value;renderMemberOptions();render()};
     $('prev').onclick=()=>{cursor=new Date(cursor.getFullYear(),cursor.getMonth()-1,1);load()};
     $('next').onclick=()=>{cursor=new Date(cursor.getFullYear(),cursor.getMonth()+1,1);load()};
     load();
