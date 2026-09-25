@@ -21,7 +21,7 @@
   </main>
   <div class="toast" id="toast"></div>
   <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbwExH-EkdwmRu58YAYAiEoqwOTGshJNh4vgQ_KdCjHTWupHS6H-W_JX2WTFhK5u2LSWWw/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbzhmrIRlIEBalsRHRVyWC72JzrhD6FbzJTsHD9Qa3a7qlPxMZ35P36RqgzbJ2hx6Jek-w/exec';
     const $ = id => document.getElementById(id);
     const DEFAULT_MEMBERS = [
       'Nguyễn Nguyên Thành Đạt',
@@ -42,18 +42,53 @@
     const week = d => iso(monday(d));
     const initials = n => { const p=n.split(/\s+/); return (p.at(-2)?.[0]||'')+(p.at(-1)?.[0]||''); };
 
-    function jsonp(params, timeout = 15000) {
+    async function jsonp(params, timeout = 30000, maxAttempts = 3) {
+      let lastError;
+      for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        try {
+          return await jsonpAttempt(params, timeout);
+        } catch (error) {
+          lastError = error;
+          if (attempt < maxAttempts) {
+            await new Promise(resolve => setTimeout(resolve, attempt * 1200));
+          }
+        }
+      }
+      throw lastError || new Error('Không thể kết nối Google Sheet.');
+    }
+
+    function jsonpAttempt(params, timeout) {
       return new Promise((resolve, reject) => {
         const callback = '__heroic_' + Date.now() + '_' + Math.random().toString(36).slice(2);
         const script = document.createElement('script');
-        const timer = setTimeout(() => finish(new Error('Không thể kết nối Google Sheet.')), timeout);
+        let finished = false;
+
         function finish(error, data) {
-          clearTimeout(timer); delete window[callback]; script.remove();
+          if (finished) return;
+          finished = true;
+          clearTimeout(timer);
+          try { delete window[callback]; }
+          catch (deleteError) { window[callback] = undefined; }
+          script.remove();
           error ? reject(error) : resolve(data);
         }
-        window[callback] = data => data && data.ok === false ? finish(new Error(data.error)) : finish(null, data);
+
+        const timer = setTimeout(
+          () => finish(new Error('Apps Script phản hồi quá lâu.')),
+          timeout
+        );
+
+        window[callback] = data => {
+          if (!data || data.ok === false) {
+            finish(new Error(data?.error || 'Apps Script trả về lỗi.'));
+            return;
+          }
+          finish(null, data);
+        };
+
         script.onerror = () => finish(new Error('Không thể tải dữ liệu từ Apps Script.'));
-        script.src = API_URL + '?' + new URLSearchParams({...params, callback, _: Date.now()});
+        const query = new URLSearchParams({...params, callback, _: Date.now()});
+        script.src = API_URL + '?' + query.toString();
         document.head.appendChild(script);
       });
     }
@@ -114,12 +149,38 @@
     function weekdayShort(date){return ['CN','T2','T3','T4','T5','T6','T7'][date.getDay()]}
     function formatShortDate(date){return `${pad(date.getDate())}/${pad(date.getMonth()+1)}`}
 
+    async function postSave(payload, maxAttempts = 3) {
+      let lastError;
+      for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 30000);
+        try {
+          await fetch(API_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
+            body: new URLSearchParams({action:'save', payload:JSON.stringify(payload)}),
+            signal: controller.signal
+          });
+          clearTimeout(timer);
+          return;
+        } catch (error) {
+          clearTimeout(timer);
+          lastError = error;
+          if (attempt < maxAttempts) {
+            await new Promise(resolve => setTimeout(resolve, attempt * 1200));
+          }
+        }
+      }
+      throw lastError || new Error('Không thể gửi dữ liệu lên Google Sheet.');
+    }
+
     async function saveMonth(){
       if(!requireMember())return;
       const entries=records.filter(r=>r.member===active&&r.date.startsWith(monthKey()+'-')).map(r=>({date:r.date,available:r.available,wish:r.wish}));
       $('save').disabled=true;$('save').textContent='Đang lưu…';
       try {
-        await fetch(API_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:new URLSearchParams({action:'save',payload:JSON.stringify({member:active,month:monthKey(),entries})})});
+        await postSave({member:active,month:monthKey(),entries});
         await waitUntilSaved(active, monthKey(), entries);
         $('save').textContent='Đã lưu';$('save').classList.add('ok');showToast('Đã đồng bộ lên Google Sheet');
         setTimeout(()=>{$('save').textContent='Lưu đăng ký';$('save').classList.remove('ok')},1800);
