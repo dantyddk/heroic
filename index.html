@@ -21,7 +21,7 @@
   </main>
   <div class="toast" id="toast"></div>
   <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbzhmrIRlIEBalsRHRVyWC72JzrhD6FbzJTsHD9Qa3a7qlPxMZ35P36RqgzbJ2hx6Jek-w/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbwJvhDWwrsrQT23niX9mmmbfGVlXnOlQOvxFKyelA7Qoc0vcyCsDIOfW2_skccOPrpCPg/exec';
     const $ = id => document.getElementById(id);
     const DEFAULT_MEMBERS = [
       'Nguyễn Nguyên Thành Đạt',
@@ -32,7 +32,7 @@
       'Huỳnh Lê Quốc Bảo',
       'Phạm Lâm Quang Tuyến'
     ];
-    let members = [...DEFAULT_MEMBERS], records = [], cursor = new Date(), active = '';
+    let members = [...DEFAULT_MEMBERS], records = [], submittedMembers = [], cursor = new Date(), active = '';
     cursor = new Date(cursor.getFullYear(), cursor.getMonth(), 1);
     const pad = n => String(n).padStart(2, '0');
     const iso = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
@@ -99,11 +99,15 @@
         const data = await jsonp({action:'calendar', month:monthKey()});
         members = [...new Set([...DEFAULT_MEMBERS, ...(Array.isArray(data.members) ? data.members : [])])];
         records = Array.isArray(data.records) ? data.records : [];
+        submittedMembers = Array.isArray(data.submittedMembers)
+          ? data.submittedMembers
+          : [...new Set(records.map(record => record.member).filter(Boolean))];
         active = active && members.includes(active) ? active : '';
         renderMemberOptions();
         render();
       } catch (error) {
         members = [...DEFAULT_MEMBERS];
+        submittedMembers = [];
         active = active && members.includes(active) ? active : '';
         renderMemberOptions();
         render();
@@ -122,7 +126,7 @@
     function star(d,e){e.stopPropagation();if(!requireMember()||d.getMonth()!==cursor.getMonth())return;const r=ensure(d),wk=week(d);records.filter(x=>x.member===active&&week(parse(x.date))===wk).forEach(x=>x.wish=false);r.available=true;r.wish=true;render()}
     function selectAllDays(){if(!requireMember())return;dates().filter(d=>d.getMonth()===cursor.getMonth()&&![0,6].includes(d.getDay())).forEach(d=>{ensure(d).available=true});render();showToast('Đã chọn tất cả ngày làm việc — hãy bấm Lưu đăng ký')}
 
-    function render(){ $('monthName').textContent=cursor.toLocaleDateString('vi-VN',{month:'long',year:'numeric'});$('calendar').innerHTML='';dates().forEach(d=>{const r=mine(d),out=d.getMonth()!==cursor.getMonth(),end=[0,6].includes(d.getDay()),el=document.createElement('div'),a=count(d,'available'),w=count(d,'wish');el.className=`day ${out?'out':''} ${end?'weekend':'workday'} ${r?.available?'selected':''} ${r?.wish?'wish':''} ${iso(d)===iso(new Date())?'today':''}`;el.innerHTML=`<span class="date">${d.getDate()}</span>${!end&&!out?'<button class="star" aria-label="Chọn Wish date">★</button>':''}<div class="tags">${a?`<span class="tag ${r?.available?'mine':''}">${a} có thể</span>`:''}${w?`<span class="tag wishes">${w} wish</span>`:''}</div>`;el.onclick=()=>toggle(d);el.querySelector('.star')?.addEventListener('click',e=>star(d,e));$('calendar').appendChild(el)});$('progress').innerHTML=members.map(n=>{const own=records.filter(r=>r.member===n),a=own.filter(r=>r.available).length,w=own.filter(r=>r.wish).length;return`<div class="p"><span class="avatar">${escapeHtml(initials(n))}</span><div class="pi"><div class="pn">${escapeHtml(n)}</div><div class="pc">${a} ngày có thể · ${w} wish</div></div><span class="pill ${w>=4?'done':''}">${w>=4?'Đã chọn':'Đang chọn'}</span></div>`}).join('');renderWeeklySummary() }
+    function render(){ $('monthName').textContent=cursor.toLocaleDateString('vi-VN',{month:'long',year:'numeric'});$('calendar').innerHTML='';dates().forEach(d=>{const r=mine(d),out=d.getMonth()!==cursor.getMonth(),end=[0,6].includes(d.getDay()),el=document.createElement('div'),a=count(d,'available'),w=count(d,'wish');el.className=`day ${out?'out':''} ${end?'weekend':'workday'} ${r?.available?'selected':''} ${r?.wish?'wish':''} ${iso(d)===iso(new Date())?'today':''}`;el.innerHTML=`<span class="date">${d.getDate()}</span>${!end&&!out?'<button class="star" aria-label="Chọn Wish date">★</button>':''}<div class="tags">${a?`<span class="tag ${r?.available?'mine':''}">${a} có thể</span>`:''}${w?`<span class="tag wishes">${w} wish</span>`:''}</div>`;el.onclick=()=>toggle(d);el.querySelector('.star')?.addEventListener('click',e=>star(d,e));$('calendar').appendChild(el)});$('progress').innerHTML=members.map(n=>{const own=records.filter(r=>r.member===n),a=own.filter(r=>r.available).length,w=own.filter(r=>r.wish).length,submitted=submittedMembers.includes(n);return`<div class="p"><span class="avatar">${escapeHtml(initials(n))}</span><div class="pi"><div class="pn">${escapeHtml(n)}</div><div class="pc">${a} ngày có thể · ${w} wish</div></div><span class="pill ${submitted?'done':''}">${submitted?'Submitted':'Đang chọn'}</span></div>`}).join('');renderWeeklySummary() }
 
     function renderWeeklySummary() {
       const workdays = dates().filter(d => d.getMonth() === cursor.getMonth() && ![0,6].includes(d.getDay()));
@@ -194,7 +198,7 @@
       for (let attempt=0; attempt<6; attempt++) {
         await new Promise(resolve=>setTimeout(resolve, 700 + attempt*250));
         const data=await jsonp({action:'calendar',month});
-        if(signature(data.records||[])===signature(expectedRecords)){records=data.records||[];render();return}
+        if(signature(data.records||[])===signature(expectedRecords)){records=data.records||[];submittedMembers=Array.isArray(data.submittedMembers)?data.submittedMembers:[...new Set(records.map(record=>record.member).filter(Boolean))];if(!submittedMembers.includes(memberName))submittedMembers.push(memberName);render();return}
       }
       throw new Error('Đã gửi dữ liệu nhưng chưa xác nhận được trên Google Sheet. Hãy tải lại trang để kiểm tra.');
     }
